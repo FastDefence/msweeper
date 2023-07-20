@@ -24,6 +24,7 @@ void conf_init(gameconf *conf);
 void grid_init(int x,msgrid grid[SIZE][SIZE]);
 void mine_plot(int x,int mine_num,msgrid grid[SIZE][SIZE]);
 void mine_calc(int x,msgrid grid[SIZE][SIZE]);
+
 void grid_open(int x,int y,msgrid grid[SIZE][SIZE],gameconf conf);
 void grid_pin(int x,int y,msgrid grid[SIZE][SIZE],gameconf conf);
 int  check_gameclear(int x,msgrid grid[SIZE][SIZE]);
@@ -32,6 +33,7 @@ void grid_allopen(msgrid grid[SIZE][SIZE]);
 void board_whole_disp(int x,msgrid grid[SIZE][SIZE]);
 void board_disp(int x,msgrid grid[SIZE][SIZE]);
 void time_write(time_t time);
+
 void best_time_disp();
 
 int main(){
@@ -50,14 +52,16 @@ int main(){
   return 0;
 }
 
-void game_init(int x,int num,msgrid grid[SIZE][SIZE]){//構造体等のゲーム設定を初期化する関数のグループ
+void game_init(int x,int num,msgrid grid[SIZE][SIZE]){
+  //構造体等のゲーム設定を初期化する関数のグループ
   grid_init(x,grid);
   mine_plot(x,num,grid);
   mine_calc(x,grid);
   board_whole_disp(x,grid);
 }
 
-void msweeper(int x,msgrid grid[SIZE][SIZE],gameconf conf){//ゲームを実行する関数のグループ
+void msweeper(int x,msgrid grid[SIZE][SIZE],gameconf conf)
+{//ゲームを実行する関数のグループ
   time_t end;
   time_t start=time(NULL);
   while(1){
@@ -94,7 +98,8 @@ void msweeper(int x,msgrid grid[SIZE][SIZE],gameconf conf){//ゲームを実行�
   }
 }
 
-void conf_init(gameconf *conf){//コマンドラインからの入力によるデータの初期化(ボードサイズ、地雷個数)
+void conf_init(gameconf *conf){
+  //コマンドラインからの入力によるデータの初期化(ボードサイズ、地雷個数)
   int mine_num;
   char dummy;
   for(int flag=0;flag==0;){
@@ -126,7 +131,8 @@ void conf_init(gameconf *conf){//コマンドラインからの入力による�
   }
 }
 
-void grid_init(int x,msgrid grid[SIZE][SIZE]){//ますの状態の初期化
+void grid_init(int x,msgrid grid[SIZE][SIZE]){
+  //ますの状態の初期化
   for(int i=0;i<x;i++){
     for(int j=0;j<x;j++){
       grid[i][j].grid_info=' ';
@@ -137,7 +143,8 @@ void grid_init(int x,msgrid grid[SIZE][SIZE]){//ますの状態の初期化
   }
 }
 
-void mine_plot(int x,int mine_num,msgrid grid[SIZE][SIZE]){//地雷設置位置の設定
+void mine_plot(int x,int mine_num,msgrid grid[SIZE][SIZE]){
+  //地雷設置位置の設定
   srand((unsigned)time(NULL));
   for(int i=0;i<mine_num;i++){
     int flag=0,plotx,ploty;
@@ -152,7 +159,8 @@ void mine_plot(int x,int mine_num,msgrid grid[SIZE][SIZE]){//地雷設置位置�
   }
 }
 
-void mine_calc(int x,msgrid grid[SIZE][SIZE]){//各ますの地雷数計算
+void mine_calc(int x,msgrid grid[SIZE][SIZE]){
+  //各ますの地雷数計算
   for(int i=0;i<x;i++){
     for(int j=0;j<x;j++){
       if(grid[i-1][j-1].grid_info=='*'){/*左上*/
@@ -186,7 +194,8 @@ void mine_calc(int x,msgrid grid[SIZE][SIZE]){//各ますの地雷数計算
   }
 }
 
-void grid_open(int x,int y,msgrid grid[SIZE][SIZE],gameconf conf){//ますを開く
+void grid_open(int x,int y,msgrid grid[SIZE][SIZE],gameconf conf){
+  //ますを開く
   int flag=grid[x][y].mine_around;
   grid[x][y].grid_opened=1;
   if(flag>0){
@@ -210,7 +219,8 @@ void grid_open(int x,int y,msgrid grid[SIZE][SIZE],gameconf conf){//ますを開
   }
 }
 
-void grid_pin(int x,int y,msgrid grid[SIZE][SIZE],gameconf conf){//ピンを設置関数
+void grid_pin(int x,int y,msgrid grid[SIZE][SIZE],gameconf conf){
+//ピンを設置
 //地雷の存在する可能性のあるマスにマークを付ける
   if(grid[x][y].grid_pinned==0){
     grid[x][y].grid_pinned=1;
@@ -222,7 +232,8 @@ void grid_pin(int x,int y,msgrid grid[SIZE][SIZE],gameconf conf){//ピンを設�
   }
 }
 
-int check_gameclear(int x,msgrid grid[SIZE][SIZE]){//終了条件(クリア)判定
+int check_gameclear(int x,msgrid grid[SIZE][SIZE]){
+  //終了条件(クリア)判定
   int flag=0;
   for(int i=0;i<x;i++){
     for(int j=0;j<x;j++){
@@ -234,7 +245,8 @@ int check_gameclear(int x,msgrid grid[SIZE][SIZE]){//終了条件(クリア)判�
   return flag;
 }
 
-int check_gameover(int x,int y,msgrid grid[SIZE][SIZE]){//終了条件(ゲームオーバー)判定
+int check_gameover(int x,int y,msgrid grid[SIZE][SIZE]){
+  //終了条件(ゲームオーバー)判定
   int flag=0;
   if(grid[x][y].grid_info=='*'){
     flag=1;
@@ -242,7 +254,8 @@ int check_gameover(int x,int y,msgrid grid[SIZE][SIZE]){//終了条件(ゲーム
   return flag;
 }
 
-void grid_allopen(msgrid grid[SIZE][SIZE]){//全てのますを開く
+void grid_allopen(msgrid grid[SIZE][SIZE]){
+  //全てのますを開く
   for(int i=0;i<SIZE;i++){
     for(int j=0;j<SIZE;j++){
       grid[i][j].grid_opened=1;
@@ -253,7 +266,8 @@ void grid_allopen(msgrid grid[SIZE][SIZE]){//全てのますを開く
   }
 }
 
-void board_whole_disp(int x,msgrid grid[SIZE][SIZE]){//装飾含めたすべてのユーザインタフェース部分を表示j
+void board_whole_disp(int x,msgrid grid[SIZE][SIZE]){
+  //装飾含めたすべてのユーザインタフェース部分を表示j
   /*上枠*/
   printf("   ");
   for(int i=0;i<x;i++){
@@ -270,7 +284,8 @@ void board_whole_disp(int x,msgrid grid[SIZE][SIZE]){//装飾含めたすべて�
   printf(" \n");
 }
 
-void board_disp(int x,msgrid grid[SIZE][SIZE]){//ユーザインタフェース中のボードの盤面部分の表示
+void board_disp(int x,msgrid grid[SIZE][SIZE]){
+  //ユーザインタフェース中のボードの盤面部分の表示
   for(int i=0;i<x;i++){
     printf("%2d|",i);
     for(int j=0;j<x;j++){
@@ -288,7 +303,8 @@ void board_disp(int x,msgrid grid[SIZE][SIZE]){//ユーザインタフェース�
   }
 }
 
-void time_write(time_t time){//経過時間計算、表示、ファイル書き込み
+void time_write(time_t time){
+  //経過時間計算、表示、ファイル書き込み
   time_t h=time/(60*60);
   time_t m=(time-h*(60*60))/60;
   time_t s=time%60;
@@ -298,7 +314,8 @@ void time_write(time_t time){//経過時間計算、表示、ファイル書き�
   fprintf(fp,"%ld\n",time);
 }
 
-void best_time_disp(){//ベストタイム表示
+void best_time_disp(){
+  //ベストタイム(ハイスコア)表示
   int time[1000],num,count=0;
   int c;
   FILE *fp;
